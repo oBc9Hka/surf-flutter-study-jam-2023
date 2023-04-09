@@ -93,7 +93,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Study Jam 2023',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(13.0),
+              ),
+            ),
+          ),
+        ),
       ),
       home: const TicketStoragePage(),
     );

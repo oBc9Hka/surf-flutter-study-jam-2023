@@ -11,6 +11,7 @@ class TicketsListEvent with _$TicketsListEvent {
   }) = TicketsListAddTicketEvent;
   const factory TicketsListEvent.downloadTickets({
     required List<String> keys,
+    required Function(String msg) onError,
   }) = DownloadTicketsEvent;
   const factory TicketsListEvent.pauseDownloadForTicket({
     required String key,

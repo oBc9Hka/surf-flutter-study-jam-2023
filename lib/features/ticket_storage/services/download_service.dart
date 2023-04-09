@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 
 import '../data/services/download_service_abstract.dart';

@@ -84,6 +84,7 @@ class _DocumentViewScreenState extends State<DocumentViewScreen> {
           title: Text(
             'Просмотр документа',
             style: StyleThemes.commonWhiteStyle.copyWith(fontSize: 16),
+            overflow: TextOverflow.fade,
           ),
           actions: [
             BlocBuilder<DocumentViewBloc, DocumentViewState>(

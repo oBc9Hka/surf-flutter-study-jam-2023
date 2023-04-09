@@ -6,7 +6,6 @@ import 'package:surf_flutter_study_jam_2023/features/ticket_storage/data/models/
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/data/services/tickets_storage_service_abstract.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/domain/entities/ticket.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/domain/repositories/tickets_repository_abstract.dart';
-import 'package:uuid/uuid.dart';
 
 import '../services/documents_storage_service_abstract.dart';
 import '../services/download_service_abstract.dart';
@@ -102,6 +101,7 @@ class TicketsRepository implements TicketsRepositoryAbstract {
         await file.delete();
       }
       return true;
+      // TODO: продебажить и узнать причину забагованности
       // return await ticketsStorageService.deleteTicket(
       //   url: ticket.url,
       //   key: ticket.key,
