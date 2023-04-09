@@ -29,7 +29,7 @@
 
 # Пустой экран
 <p align="center">
-<img src="assets/tickets_empty_state.png" width="375" alt="Empty screen" />
+<img src="assets/empty_list.png" width="375" alt="Empty screen" />
 </p>
 
 # Модалка ввода Url(и Ui баги)
