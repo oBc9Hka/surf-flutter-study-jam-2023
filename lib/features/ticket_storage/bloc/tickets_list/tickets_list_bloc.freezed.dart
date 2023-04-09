@@ -22,7 +22,9 @@ mixin _$TicketsListEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) =>
@@ -33,7 +35,8 @@ mixin _$TicketsListEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) =>
@@ -44,7 +47,8 @@ mixin _$TicketsListEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),
@@ -142,7 +146,9 @@ class _$TicketsListLoadEvent extends TicketsListLoadEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) {
@@ -156,7 +162,8 @@ class _$TicketsListLoadEvent extends TicketsListLoadEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) {
@@ -170,7 +177,8 @@ class _$TicketsListLoadEvent extends TicketsListLoadEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),
@@ -321,7 +329,9 @@ class _$TicketsListAddTicketEvent extends TicketsListAddTicketEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) {
@@ -335,7 +345,8 @@ class _$TicketsListAddTicketEvent extends TicketsListAddTicketEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) {
@@ -349,7 +360,8 @@ class _$TicketsListAddTicketEvent extends TicketsListAddTicketEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),
@@ -425,7 +437,7 @@ abstract class _$$DownloadTicketsEventCopyWith<$Res> {
           $Res Function(_$DownloadTicketsEvent) then) =
       __$$DownloadTicketsEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<String> keys});
+  $Res call({List<String> keys, dynamic Function(String) onError});
 }
 
 /// @nodoc
@@ -440,12 +452,17 @@ class __$$DownloadTicketsEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? keys = null,
+    Object? onError = null,
   }) {
     return _then(_$DownloadTicketsEvent(
       keys: null == keys
           ? _value._keys
           : keys // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      onError: null == onError
+          ? _value.onError
+          : onError // ignore: cast_nullable_to_non_nullable
+              as dynamic Function(String),
     ));
   }
 }
@@ -453,7 +470,8 @@ class __$$DownloadTicketsEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DownloadTicketsEvent extends DownloadTicketsEvent {
-  const _$DownloadTicketsEvent({required final List<String> keys})
+  const _$DownloadTicketsEvent(
+      {required final List<String> keys, required this.onError})
       : _keys = keys,
         super._();
 
@@ -466,8 +484,11 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
   }
 
   @override
+  final dynamic Function(String) onError;
+
+  @override
   String toString() {
-    return 'TicketsListEvent.downloadTickets(keys: $keys)';
+    return 'TicketsListEvent.downloadTickets(keys: $keys, onError: $onError)';
   }
 
   @override
@@ -475,12 +496,13 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DownloadTicketsEvent &&
-            const DeepCollectionEquality().equals(other._keys, _keys));
+            const DeepCollectionEquality().equals(other._keys, _keys) &&
+            (identical(other.onError, onError) || other.onError == onError));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_keys));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_keys), onError);
 
   @JsonKey(ignore: true)
   @override
@@ -496,11 +518,13 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) {
-    return downloadTickets(keys);
+    return downloadTickets(keys, onError);
   }
 
   @override
@@ -510,11 +534,12 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) {
-    return downloadTickets?.call(keys);
+    return downloadTickets?.call(keys, onError);
   }
 
   @override
@@ -524,13 +549,14 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),
   }) {
     if (downloadTickets != null) {
-      return downloadTickets(keys);
+      return downloadTickets(keys, onError);
     }
     return orElse();
   }
@@ -579,11 +605,14 @@ class _$DownloadTicketsEvent extends DownloadTicketsEvent {
 }
 
 abstract class DownloadTicketsEvent extends TicketsListEvent {
-  const factory DownloadTicketsEvent({required final List<String> keys}) =
+  const factory DownloadTicketsEvent(
+          {required final List<String> keys,
+          required final dynamic Function(String) onError}) =
       _$DownloadTicketsEvent;
   const DownloadTicketsEvent._() : super._();
 
   List<String> get keys;
+  dynamic Function(String) get onError;
   @JsonKey(ignore: true)
   _$$DownloadTicketsEventCopyWith<_$DownloadTicketsEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -660,7 +689,9 @@ class _$PauseDownloadForTicketEvent extends PauseDownloadForTicketEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) {
@@ -674,7 +705,8 @@ class _$PauseDownloadForTicketEvent extends PauseDownloadForTicketEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) {
@@ -688,7 +720,8 @@ class _$PauseDownloadForTicketEvent extends PauseDownloadForTicketEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),
@@ -822,7 +855,9 @@ class _$DeleteDocumentEvent extends DeleteDocumentEvent {
     required TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)
         addTicket,
-    required TResult Function(List<String> keys) downloadTickets,
+    required TResult Function(
+            List<String> keys, dynamic Function(String) onError)
+        downloadTickets,
     required TResult Function(String key) pauseDownloadForTicket,
     required TResult Function(Ticket ticket) deleteDocument,
   }) {
@@ -836,7 +871,8 @@ class _$DeleteDocumentEvent extends DeleteDocumentEvent {
     TResult? Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult? Function(List<String> keys)? downloadTickets,
+    TResult? Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult? Function(String key)? pauseDownloadForTicket,
     TResult? Function(Ticket ticket)? deleteDocument,
   }) {
@@ -850,7 +886,8 @@ class _$DeleteDocumentEvent extends DeleteDocumentEvent {
     TResult Function(String url, dynamic Function() onSuccess,
             dynamic Function(String) onError)?
         addTicket,
-    TResult Function(List<String> keys)? downloadTickets,
+    TResult Function(List<String> keys, dynamic Function(String) onError)?
+        downloadTickets,
     TResult Function(String key)? pauseDownloadForTicket,
     TResult Function(Ticket ticket)? deleteDocument,
     required TResult orElse(),

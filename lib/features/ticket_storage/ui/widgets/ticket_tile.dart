@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_preview/bloc/document_view/document_view_bloc.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/bloc/tickets_list/tickets_list_bloc.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/domain/entities/ticket.dart';
+import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/widgets/deletion_dialog.dart';
 import 'dart:math';
 
 import '../../../ticket_preview/ui/document_view_screen.dart';
@@ -17,20 +18,30 @@ class TicketTile extends StatelessWidget {
   });
 
   Widget _loadingButton(BuildContext context) {
+    final IconButton button;
     switch (ticket.state) {
       case TicketState.notLoaded:
-        return IconButton(
+        button = IconButton(
           onPressed: () {
             BlocProvider.of<TicketsListBloc>(context).add(
               TicketsListEvent.downloadTickets(
                 keys: [ticket.key],
+                onError: (msg) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(msg),
+                      duration: const Duration(milliseconds: 1500),
+                    ),
+                  );
+                },
               ),
             );
           },
           icon: const Icon(Icons.download),
         );
+        break;
       case TicketState.loading:
-        return IconButton(
+        button = IconButton(
           onPressed: () {
             BlocProvider.of<TicketsListBloc>(context).add(
               TicketsListEvent.pauseDownloadForTicket(
@@ -40,63 +51,39 @@ class TicketTile extends StatelessWidget {
           },
           icon: const Icon(Icons.stop_circle),
         );
+        break;
       case TicketState.paused:
-        return IconButton(
+        button = IconButton(
           onPressed: () {},
           icon: const Icon(Icons.play_arrow),
         );
+        break;
       case TicketState.loaded:
-        return Row(
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.cloud_download),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Действительно хотите удалить файл "${ticket.name}"?',
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Отмена'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  BlocProvider.of<TicketsListBloc>(context).add(
-                                    TicketsListEvent.deleteDocument(
-                                      ticket: ticket,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Удалить'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+        button = const IconButton(
+          onPressed: null,
+          disabledColor: Colors.black,
+          icon: Icon(Icons.cloud_download),
+        );
+        break;
+    }
+    return Row(
+      children: [
+        button,
+        IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return DeletionDialog(
+                  ticket: ticket,
                 );
               },
-              icon: const Icon(Icons.delete),
-            ),
-          ],
-        );
-    }
+            );
+          },
+          icon: const Icon(Icons.delete),
+        ),
+      ],
+    );
   }
 
   Widget _loadingIndicator() {
@@ -152,27 +139,41 @@ class TicketTile extends StatelessWidget {
           );
         }
       },
-      child: Row(
-        children: [
-          const Icon(Icons.airplane_ticket),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(ticket.name),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: _loadingIndicator(),
+                  const Icon(Icons.airplane_ticket),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(ticket.name),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: _loadingIndicator(),
+                          ),
+                          _subText(),
+                        ],
+                      ),
+                    ),
                   ),
-                  _subText(),
                 ],
               ),
-            ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _loadingButton(context),
+                ],
+              )
+            ],
           ),
-          _loadingButton(context),
-        ],
+        ),
       ),
     );
   }

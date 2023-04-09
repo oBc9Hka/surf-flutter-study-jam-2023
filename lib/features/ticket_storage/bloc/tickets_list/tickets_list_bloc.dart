@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 
@@ -119,6 +121,9 @@ class TicketsListBloc extends Bloc<TicketsListEvent, TicketsListState> {
                     state: TicketState.notLoaded,
                     loadingProgress: LoadingProgress.initial(),
                   );
+                  event.onError(
+                    'Не удалось скачать документ "${element.name}"',
+                  );
                 }
                 downloadingTicketsControllers.removeWhere(
                   (c) => c.key == element.key,
@@ -147,12 +152,15 @@ class TicketsListBloc extends Bloc<TicketsListEvent, TicketsListState> {
         deleteDocument: (event) async {
           emit(const TicketsListState.loading());
           await ticketsRepository.deleteTicket(ticket: event.ticket);
+          // костыль
+          //---
           tickets.removeWhere(
             (element) => element.key == event.ticket.key,
           );
           await ticketsRepository.saveTicketsList(
             tickets: tickets,
           );
+          //---
           add(const TicketsListEvent.load());
         },
       );

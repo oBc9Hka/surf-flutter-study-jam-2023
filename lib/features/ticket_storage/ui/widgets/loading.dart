@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/theme/style_themes.dart';
 
 class Loading extends StatelessWidget {

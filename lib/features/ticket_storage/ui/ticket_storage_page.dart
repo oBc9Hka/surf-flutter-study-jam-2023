@@ -1,66 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/theme/style_themes.dart';
+import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/widgets/floating_row.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/widgets/loading.dart';
 import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/widgets/ticket_tile.dart';
-import 'package:surf_flutter_study_jam_2023/features/ticket_storage/ui/widgets/url_bottom_sheet.dart';
 
 import '../bloc/tickets_list/tickets_list_bloc.dart';
-import '../enum/ticket_state.dart';
 
 class TicketStoragePage extends StatelessWidget {
   const TicketStoragePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+    final floatingController = FloatingButtonController(isVisible: true);
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent - scrollController.offset <
+          10) {
+        floatingController.hide();
+      } else {
+        floatingController.show();
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Хранение билетов',
-          style: StyleThemes.commonDarkStyle.copyWith(
+          style: StyleThemes.commonWhiteStyle.copyWith(
             fontSize: 16,
           ),
+          overflow: TextOverflow.fade,
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) => const UrlBottomSheet(),
-              );
-            },
-            child: const Text(
-              'Добавить',
-              style: StyleThemes.commonDarkStyle,
-            ),
-          ),
-          const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () {
-              BlocProvider.of<TicketsListBloc>(context).add(
-                TicketsListEvent.downloadTickets(
-                  keys: context
-                      .read<TicketsListBloc>()
-                      .tickets
-                      .where(
-                        (element) => element.state == TicketState.notLoaded,
-                      )
-                      .map((e) => e.key)
-                      .toList(),
-                ),
-              );
-            },
-            child: const Text(
-              'Загрузить все',
-              style: StyleThemes.commonDarkStyle,
-            ),
-          ),
-        ],
-      ),
+      floatingActionButton: FloatingRow(buttonController: floatingController),
       body: Stack(
         children: [
           BlocBuilder<TicketsListBloc, TicketsListState>(
@@ -71,6 +44,7 @@ class TicketStoragePage extends StatelessWidget {
                   final tickets = state.tickets.toList();
                   tickets.sort((a, b) => b.timeAdded.compareTo(a.timeAdded));
                   return ListView.builder(
+                    controller: scrollController,
                     itemBuilder: (context, index) {
                       final ticket = tickets[index];
                       return Padding(
