@@ -29,37 +29,37 @@
 
 # Пустой экран
 <p align="center">
-<img src="assets/empty_list.png" width="375" alt="Empty screen" />
+<img src="results/empty_list.png" width="375" alt="Empty screen" />
 </p>
 
 # Модалка ввода Url(и Ui баги)
 <div class="row" align="center">
-  <img src="assets/clipboard.png" width="375" alt="ModalBottomSheet clipboard " style="margin-right: 30px;" />
-  <img src="assets/bottom_sheet.png" width="375" alt="ModalBottomSheet empty " />
-  <img src="assets/invalid.png" width="375" alt="ModalBottomSheet error, crap, bugsss " />
+  <img src="results/clipboard.png" width="375" alt="ModalBottomSheet clipboard " style="margin-right: 30px;" />
+  <img src="results/bottom_sheet.png" width="375" alt="ModalBottomSheet empty " />
+  <img src="results/invalid.png" width="375" alt="ModalBottomSheet error, crap, bugsss " />
 </div>
 Клавиатура не закрывает модалку, забагалась клава и перестала открываться, придётся это проверить при запуске ;)
 
 # Удачное и неудачное добавление билета
 <div class="row" align="center">
-  <img src="assets/successful_add.png" width="375" alt="Tickets success add " style="margin-right: 30px;" />
-  <img src="assets/check_contains.png" width="375" alt="Already added ticket " />
+  <img src="results/successful_add.png" width="375" alt="Tickets success add " style="margin-right: 30px;" />
+  <img src="results/check_contains.png" width="375" alt="Already added ticket " />
 </div>
-
+s
 # Скачивание одиночное/массовое
 <div class="row" align="center">
-  <img src="assets/downloading.png" width="375" alt="Ticket downloading " style="margin-right: 30px;" />
-  <img src="assets/mass_downloading.png" width="375" alt="Tickets mass downloading " />
+  <img src="results/downloading.png" width="375" alt="Ticket downloading " style="margin-right: 30px;" />
+  <img src="results/mass_downloading.png" width="375" alt="Tickets mass downloading " />
 </div>
 
 # Просмотр документа
 <p align="center">
-<img src="assets/doc_view.png" width="375" alt="Docs view" />
+<img src="results/doc_view.png" width="375" alt="Docs view" />
 </p>
 
 # Спрятанная строка плавающих кнопок в конце списка
 <p align="center">
-<img src="assets/hidden_floating.png" width="375" alt="Hidden floating" />
+<img src="results/hidden_floating.png" width="375" alt="Hidden floating" />
 </p>
 
 
