@@ -45,7 +45,7 @@
   <img src="results/successful_add.png" width="375" alt="Tickets success add " style="margin-right: 30px;" />
   <img src="results/check_contains.png" width="375" alt="Already added ticket " />
 </div>
-s
+
 # Скачивание одиночное/массовое
 <div class="row" align="center">
   <img src="results/downloading.png" width="375" alt="Ticket downloading " style="margin-right: 30px;" />
